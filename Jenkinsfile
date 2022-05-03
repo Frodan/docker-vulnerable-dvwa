@@ -19,7 +19,7 @@ pipeline {
                                     sonarsource/sonar-scanner-cli \
                                     -Dsonar.projectKey=Thesis \
                                     -Dsonar.sources=dvwa \
-                                    -Dsonar.projectName=Thesis Project \
+                                    -Dsonar.projectName=Thesis_Project \
                                     -Dsonar.login=${SONAR_TOKEN}"
         }
       }
