@@ -20,6 +20,7 @@ pipeline {
     stage('Deploy'){
       agent any
       steps{
+        sh 'docker stop thesis_project'
         sh 'docker run --rm --name thesis_project -d -p 80:80 vulnerables/web-dvwa'
       }
     }
