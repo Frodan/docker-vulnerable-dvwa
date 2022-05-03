@@ -8,7 +8,7 @@ pipeline {
     stage('Secrets Scan'){
       agent any
       steps{
-        sh 'docker run -it -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
+        sh 'docker run -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
       }
     }
     stage('Docker Build') {
