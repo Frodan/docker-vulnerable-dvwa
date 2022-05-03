@@ -18,7 +18,7 @@ pipeline {
           sh "docker run -e SONAR_HOST_URL=http://localhost:9000 -v \"\${PWD}:/usr/src\" --net=\"host\" \
                                     sonarsource/sonar-scanner-cli \
                                     -Dsonar.projectKey=Thesis \
-                                    -Dsonar.sources=dvwa \
+                                    -Dsonar.sources=. \
                                     -Dsonar.projectName=Thesis_Project \
                                     -Dsonar.login=${SONAR_TOKEN}"
         }
