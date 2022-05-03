@@ -35,7 +35,7 @@ pipeline {
       steps{
         sh 'docker stop thesis_project'
         sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
-        sh 'python set_db.py'
+        sh 'python3 set_db.py'
       }
     }
     stage('DAST') {
