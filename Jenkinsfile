@@ -5,6 +5,12 @@ pipeline {
     USER_PASS = 'test'
   }
   stages {
+    stage('Secrets Scan'){
+      agent any
+      steps{
+        sh 'docker run -it -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
+      }
+    }
     stage('Docker Build') {
       agent any
       steps {
