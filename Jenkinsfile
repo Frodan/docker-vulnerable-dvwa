@@ -17,6 +17,11 @@ pipeline {
         sh 'docker build . --file Dockerfile --tag frodan/thesis_project'
       }
     }
+    stage('Deploy'){
+    agent any
+    steps{
+      sh 'docker run --rm -it -p 80:80 vulnerables/web-dvwa'
+    }
 //     stage('Docker Push') {
 //       agent any
 //       steps {
