@@ -9,7 +9,7 @@ pipeline {
       agent any
       steps {
         dir('app_python'){
-          sh 'docker build . --file Dockerfile --tag frodan/Thesis_project'
+          sh 'docker build . --file Dockerfile --tag frodan/thesis_project'
         }
       }
     }
