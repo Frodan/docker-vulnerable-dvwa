@@ -43,7 +43,7 @@ pipeline {
       sh '''
         mkdir -p $PWD/reports $PWD/artifacts;
         docker run \
-            -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
+            -v $PWD/reports:/arachni/reports --net=\"host\" ahannigan/docker-arachni \
             bin/arachni http://project.local --report-save-path=reports/project.local.afr;
         docker run --name=arachni_report  \
             -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
