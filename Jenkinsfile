@@ -15,7 +15,7 @@ pipeline {
       agent any
       steps{
         withCredentials([string(credentialsId: 'sonarToken', variable: 'SONAR_TOKEN')]){
-          sh "docker run -e SONAR_HOST_URL=http://localhost:9000 -v \"\${PWD}/dvwa:/usr/src\" --net=\"host\" \
+          sh "docker run -e SONAR_HOST_URL=http://localhost:9000 -v \"\${PWD}:/usr/src\" --net=\"host\" \
                                     sonarsource/sonar-scanner-cli \
                                     -Dsonar.projectKey=Thesis \
                                     -Dsonar.sources=. \
