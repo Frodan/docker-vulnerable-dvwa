@@ -11,6 +11,17 @@ pipeline {
         sh 'docker run -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
       }
     }
+    stage('SAST'){
+      agent any
+      steps{
+        sh "docker run -e SONAR_HOST_URL=http://localhost:9000 -v \"\${PWD}:/usr/src\" --net=\"host\" \
+                                    sonarsource/sonar-scanner-cli \
+                                    -Dsonar.projectKey=Thesis \
+                                    -Dsonar.sources=dvwa \
+                                    -Dsonar.projectName=Thesis Project \
+                                    -Dsonar.login=${sonarToken}"
+      }
+    }
     stage('Docker Build') {
       agent any
       steps {
