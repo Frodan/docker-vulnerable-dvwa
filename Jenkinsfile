@@ -37,6 +37,23 @@ pipeline {
         sh 'docker run --rm --name thesis_project -d -p 80:80 vulnerables/web-dvwa'
       }
     }
+    stage('Arachni') {
+      agent any
+      steps{
+      sh '''
+        mkdir -p $PWD/reports $PWD/artifacts;
+        docker run \
+            -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
+            bin/arachni http://project.local --report-save-path=reports/project.local.afr;
+        docker run --name=arachni_report  \
+            -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
+            bin/arachni_reporter reports/project.local.afr --reporter=html:outfile=reports/project-local-report.html.zip;
+        docker cp arachni_report:/arachni/reports/project-local-report.html.zip $PWD/artifacts;
+        docker rm arachni_report;
+      '''
+      archiveArtifacts artifacts: 'artifacts/**', fingerprint: true
+      }
+    }
 //     stage('Docker Push') {
 //       agent any
 //       steps {
