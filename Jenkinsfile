@@ -24,12 +24,21 @@ pipeline {
         }
       }
     }
+    stage ('DOckerfile Check'){
+      agent any
+      steps{
+        sh 'docker run -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy conf /myapp'
+      }
+    }
+
     stage('Docker Build') {
       agent any
       steps {
         sh 'docker build . --file Dockerfile --tag frodan/thesis_project'
       }
     }
+
+
     stage('Deploy'){
       agent any
       steps{
