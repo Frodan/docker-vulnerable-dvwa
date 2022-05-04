@@ -24,7 +24,7 @@ pipeline {
         }
       }
     }
-    stage ('DOckerfile Check'){
+    stage ('Dockerfile Check'){
       agent any
       steps{
         sh 'docker run -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy conf /myapp'
@@ -44,7 +44,7 @@ pipeline {
       steps{
         sh 'docker stop thesis_project'
         sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
-        sh 'curl -d "create_db=Create+%2F+Reset+Database" -X POST http://172.17.0.1/setup.php'
+//         sh 'curl -d "create_db=Create+%2F+Reset+Database" -X POST http://172.17.0.1/setup.php'
       }
     }
     stage('DAST') {
