@@ -31,10 +31,13 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
+    stage('Docker Build and Push') {
       agent any
       steps {
         sh 'docker build . --file Dockerfile --tag frodan/thesis_project'
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push frodan/thesis_project'
       }
     }
 
