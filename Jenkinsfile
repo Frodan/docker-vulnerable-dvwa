@@ -42,6 +42,13 @@ pipeline {
       }
     }
 
+    stage('Docker Image Scan'){
+      agent any
+      steps {
+        sh 'docker run aquasec/trivy image --ignore-unfixed frodan/thesis_project'
+      }
+    }
+
 
     stage('Deploy'){
       agent any
