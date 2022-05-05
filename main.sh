@@ -8,6 +8,8 @@ service mysql start
 echo '[+] Starting apache'
 service apache2 start
 
+sleep 5
+curl -d "create_db=Create+%2F+Reset+Database" -X POST http://localhost/setup.php
 while true
 do
     tail -f /var/log/apache2/*.log

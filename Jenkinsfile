@@ -4,16 +4,7 @@ pipeline {
     USER_LOGIN = 'test'
     USER_PASS = 'test'
   }
-
   stages {
-  stage('Deploy'){
-      agent any
-      steps{
-        sh 'docker stop thesis_project'
-        sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
-        sh 'docker run --rm --net=host curlimages/curl:7.83.0 -d "create_db=Create+%2F+Reset+Database" -X POST http://localhost/setup.php -vv'
-      }
-    }
     stage('Secrets Scan'){
       agent any
       steps{
@@ -59,14 +50,13 @@ pipeline {
     }
 
 
-//     stage('Deploy'){
-//       agent any
-//       steps{
-//         sh 'docker stop thesis_project'
-//         sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
-//         sh 'docker run --rm --net=host curlimages/curl:7.83.0 -d "create_db=Create+%2F+Reset+Database" -X POST http://localhost/setup.php -vv'
-//       }
-//     }
+    stage('Deploy'){
+      agent any
+      steps{
+        sh 'docker stop thesis_project'
+        sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
+      }
+    }
     stage('DAST') {
       agent any
       steps{
