@@ -55,7 +55,7 @@ pipeline {
       steps{
         sh 'docker stop thesis_project'
         sh 'docker run --rm --name thesis_project -d -p 80:80 frodan/thesis_project'
-//         sh 'curl -d "create_db=Create+%2F+Reset+Database" -X POST http://172.17.0.1/setup.php'
+        sh 'docker run --rm --net=\"host\" curlimages/curl:7.83.0 -d "create_db=Create+%2F+Reset+Database" -X POST http://project.local/setup.php'
       }
     }
     stage('DAST') {
