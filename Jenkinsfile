@@ -60,6 +60,7 @@ pipeline {
     stage('DAST') {
       agent any
       steps{
+      sh 'sleep 15'
       sh '''
         mkdir -p $PWD/reports $PWD/artifacts;
         docker run \
