@@ -64,7 +64,7 @@ pipeline {
         mkdir -p $PWD/reports $PWD/artifacts;
         docker run \
             -v $PWD/reports:/arachni/reports --net=\"host\" ahannigan/docker-arachni \
-            bin/arachni http://project.local  --plugin=autologin:url=http://project.local/login.php,parameters="username=admin&password=password&Login=Login",check="logout.php" --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr --output-debug 2;
+            bin/arachni http://project.local  --plugin=autologin:url=http://project.local/login.php,parameters="username=admin&password=password&Login=Login",check="logout.php" --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr --output-debug 4;
         docker run --name=arachni_report  \
             -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
             bin/arachni_reporter reports/project.local.afr --reporter=html:outfile=reports/project-local-report.html.zip;
