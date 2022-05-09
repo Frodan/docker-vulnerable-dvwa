@@ -14,7 +14,7 @@ pipeline {
     stage('Dependency Scan'){
      agent any
      steps{
-       sh 'docker run -v "$/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json" node:17-slim npm audit'
+       sh 'docker run -v "/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json" node:17-slim npm audit'
      }
     }
     stage('SAST'){
@@ -33,7 +33,7 @@ pipeline {
     stage ('Dockerfile Check'){
       agent any
       steps{
-        sh 'docker run -v "/home/frodan/jenkins/workspace/Thesis_master@2:/myapp" aquasec/trivy conf /myapp'
+        sh 'docker run -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy conf /myapp'
       }
     }
 
