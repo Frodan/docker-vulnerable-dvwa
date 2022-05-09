@@ -11,6 +11,12 @@ pipeline {
         sh 'docker run -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
       }
     }
+    stage('Dependency Scan'){
+     agent any
+     steps{
+       sh 'docker run -v "$/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json" node:17-slim npm audit'
+     }
+    }
     stage('SAST'){
       agent any
       steps{
