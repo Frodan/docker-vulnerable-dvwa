@@ -33,7 +33,7 @@ pipeline {
     stage ('Dockerfile Check'){
       agent any
       steps{
-        sh 'docker run -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy conf /myapp'
+        sh 'docker run -v "/home/frodan/jenkins/workspace/Thesis_master@2:/myapp" aquasec/trivy conf /myapp'
       }
     }
 
