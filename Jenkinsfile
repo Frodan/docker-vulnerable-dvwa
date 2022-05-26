@@ -80,6 +80,7 @@ pipeline {
         docker rm arachni_report;
       '''
       archiveArtifacts artifacts: 'artifacts/**', fingerprint: true
+        }
       }
     }
   }
