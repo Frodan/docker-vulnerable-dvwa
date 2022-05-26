@@ -67,12 +67,11 @@ pipeline {
       agent any
       steps{
       sh 'sleep 10'
-      withCredentials([usernamePassword(credentialsId: 'DASTCredentials', passwordVariable: 'DASTpassword', usernameVariable: 'DASTlogin')]) {
       sh '''
         mkdir -p $PWD/reports $PWD/artifacts;
         docker run \
             -v $PWD/reports:/arachni/reports --net=\"host\" ahannigan/docker-arachni \
-            bin/arachni http://project.local  --plugin=autologin:url=http://project.local/login.php,parameters="username=${env.DASTlogin}&password=${env.DASTpassword}&Login=Login",check="logout.php" --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr;
+            bin/arachni http://project.local  --plugin=autologin:url=http://project.local/login.php,parameters="username=admin&password=password&Login=Login",check="logout.php" --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr;
         docker run --name=arachni_report  \
             -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
             bin/arachni_reporter reports/project.local.afr --reporter=html:outfile=reports/project-local-report.html.zip;
@@ -80,7 +79,6 @@ pipeline {
         docker rm arachni_report;
       '''
       archiveArtifacts artifacts: 'artifacts/**', fingerprint: true
-        }
       }
     }
   }
