@@ -13,7 +13,7 @@ pipeline {
      steps{
        sh 'docker run \
            -v "/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json"\
-            node:17-slim npm audit'
+            node:17-slim'
      }
     }
     stage('SAST'){
