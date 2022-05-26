@@ -1,39 +1,42 @@
 pipeline {
   agent any
-  environment {
-    USER_LOGIN = 'test'
-    USER_PASS = 'test'
-  }
   stages {
     stage('Secrets Scan'){
       agent any
       steps{
-        sh 'docker run -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/Frodan/docker-vulnerable-dvwa'
+        sh 'docker run -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github\
+            --repo https://github.com/Frodan/docker-vulnerable-dvwa'
       }
     }
     stage('Dependency Scan'){
      agent any
      steps{
-       sh 'docker run -v "/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json" node:17-slim npm audit'
+       sh 'docker run \
+           -v "/home/frodan/jenkins/workspace/Thesis_master@2/package-lock.json:/package-lock.json"\
+            node:17-slim npm audit'
      }
     }
     stage('SAST'){
       agent any
       steps{
         withCredentials([string(credentialsId: 'sonarToken', variable: 'SONAR_TOKEN')]){
-          sh "docker run -e SONAR_HOST_URL=http://localhost:9000 -v \"/home/frodan/jenkins/workspace/Thesis_master@2:/usr/src\" --net=\"host\" \
-                                    sonarsource/sonar-scanner-cli \
-                                    -Dsonar.projectKey=Thesis \
-                                    -Dsonar.sources=. \
-                                    -Dsonar.projectName=Thesis_Project \
-                                    -Dsonar.login=${SONAR_TOKEN}"
+          sh "docker run -e SONAR_HOST_URL=http://localhost:9000 \
+                -v \"/home/frodan/jenkins/workspace/Thesis_master@2:/usr/src\"\
+                --net=\"host\" \
+                sonarsource/sonar-scanner-cli \
+                -Dsonar.projectKey=Thesis \
+                -Dsonar.sources=. \
+                -Dsonar.projectName=Thesis_Project \
+                -Dsonar.login=${SONAR_TOKEN}"
         }
       }
     }
     stage ('Dockerfile Check'){
       agent any
       steps{
-        sh 'docker run -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy conf /myapp'
+        sh 'docker run\
+            -v /home/frodan/jenkins/workspace/Thesis_master@2:/myapp aquasec/trivy\
+            conf /myapp'
       }
     }
 
@@ -72,7 +75,9 @@ pipeline {
         mkdir -p $PWD/reports $PWD/artifacts;
         docker run \
             -v $PWD/reports:/arachni/reports --net=\"host\" ahannigan/docker-arachni \
-            bin/arachni http://project.local  --plugin=autologin:url=http://project.local/login.php,parameters="username=${env.DASTlogin}&password=${env.DASTpassword}&Login=Login",check="logout.php" --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr;
+            bin/arachni http://project.local\
+            --plugin=autologin:url=http://project.local/login.php,parameters="username=${env.DASTlogin}&password=${env.DASTpassword}&Login=Login",check="logout.php"\
+            --scope-exclude-pattern=Logout --report-save-path=reports/project.local.afr;
         docker run --name=arachni_report  \
             -v $PWD/reports:/arachni/reports ahannigan/docker-arachni \
             bin/arachni_reporter reports/project.local.afr --reporter=html:outfile=reports/project-local-report.html.zip;
